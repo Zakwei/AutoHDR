@@ -13,7 +13,7 @@
 </p>
 
 <p align="center">
-  <img src="https://github.com/OWNER/REPO/actions/workflows/build.yml/badge.svg" alt="Build status">
+  <img src="https://github.com/Zakwei/AutoHDR/actions/workflows/build.yml/badge.svg" alt="Build status">
   <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License MIT">
 </p>
 
