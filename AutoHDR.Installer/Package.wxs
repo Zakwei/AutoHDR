@@ -1,0 +1,57 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+  <Package Name="AutoHDR" Language="1045" Version="1.0.0.0" Manufacturer="AutoHDR"
+           UpgradeCode="A1B2C3D4-E5F6-7890-1234-56789ABCDEF0"
+           Scope="perUser" Compressed="yes" ProductCode="*" InstallerVersion="200">
+
+    <MajorUpgrade DowngradeErrorMessage="Nowsza wersja AutoHDR jest ju\u017C zainstalowana." />
+    <MediaTemplate EmbedCab="yes" />
+
+    <Icon Id="AppIcon.ico" SourceFile="..\AutoHDR\Assets\logo.ico" />
+    <Property Id="ARPPRODUCTICON" Value="AppIcon.ico" />
+    <Property Id="MSIINSTALLPERUSER" Value="1" />
+    <Property Id="ALLUSERS" Value="2" />
+    <SetProperty Id="ARPINSTALLLOCATION" Value="[INSTALLFOLDER]" After="CostFinalize" />
+
+    <Feature Id="ProductFeature" Title="AutoHDR" Level="1">
+      <ComponentGroupRef Id="ProductComponents" />
+      <ComponentGroupRef Id="ShortcutComponents" />
+    </Feature>
+
+    <ui:WixUI Id="WixUI_InstallDir" InstallDirectory="INSTALLFOLDER" />
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+  </Package>
+
+  <Fragment>
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="INSTALLFOLDER" Name="AutoHDR" />
+    </StandardDirectory>
+
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="ApplicationProgramsFolder" Name="AutoHDR" />
+    </StandardDirectory>
+
+    <ComponentGroup Id="ProductComponents" Directory="INSTALLFOLDER">
+      <Component>
+        <File Id="AutoHDR.exe" Source="..\AutoHDR\bin\Release\net48\AutoHDR.exe" KeyPath="yes" />
+      </Component>
+      <Component>
+        <File Id="AutoHDR.exe.config" Source="..\AutoHDR\bin\Release\net48\AutoHDR.exe.config" />
+      </Component>
+      <Component>
+        <File Id="known_games.txt" Source="..\AutoHDR\bin\Release\net48\known_games.txt" />
+      </Component>
+    </ComponentGroup>
+
+    <ComponentGroup Id="ShortcutComponents" Directory="ApplicationProgramsFolder">
+      <Component>
+        <Shortcut Id="ApplicationStartMenuShortcut" Name="AutoHDR" Description="Automatyczne prze\u0142\u0105czanie HDR dla gier"
+                  Target="[INSTALLFOLDER]AutoHDR.exe" WorkingDirectory="INSTALLFOLDER" Icon="AppIcon.ico" />
+        <RemoveFolder Id="ApplicationProgramsFolder" On="uninstall" />
+        <RegistryValue Root="HKCU" Key="Software\AutoHDR" Name="installed" Type="integer" Value="1" KeyPath="yes" />
+      </Component>
+    </ComponentGroup>
+  </Fragment>
+
+</Wix>

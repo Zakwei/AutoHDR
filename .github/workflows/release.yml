@@ -1,0 +1,49 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Install WiX
+        run: |
+          dotnet tool install --global wix --version 5.0.2
+          wix extension add -g WixToolset.UI.wixext/5.0.2
+
+      - name: Build AutoHDR
+        run: dotnet build AutoHDR/AutoHDR.csproj -c Release
+
+      - name: Build installer
+        run: wix build AutoHDR.Installer/Package.wxs -arch x64 -o AutoHDR-1.0.0.msi -ext WixToolset.UI.wixext
+
+      - name: Create portable zip
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Path _release -Force
+          $files = @(
+            "AutoHDR/bin/Release/net48/AutoHDR.exe",
+            "AutoHDR/bin/Release/net48/AutoHDR.exe.config",
+            "AutoHDR/bin/Release/net48/known_games.txt"
+          )
+          Compress-Archive -Path $files -DestinationPath _release/AutoHDR-1.0.0-portable.zip -Force
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            AutoHDR-1.0.0.msi
+            _release/AutoHDR-1.0.0-portable.zip
+          body_path: Releases/v1.0.0/release-notes.md
