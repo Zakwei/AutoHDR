@@ -69,7 +69,7 @@ AutoHDR działa w tle (ikona w zasobniku systemowym), wykrywa uruchamiane gry i 
 
 ## Pobieranie
 
-Gotowe pliki znajdziesz w folderze **[Releases/v1.0.0](Releases/v1.0.0/)** lub w zakładce **Releases** na GitHubie (po opublikowaniu).
+Gotowe pliki znajdziesz w zakładce **[Releases](https://github.com/Zakwei/AutoHDR/releases/tag/v1.0.0)**.
 
 | Plik | Opis |
 |------|------|

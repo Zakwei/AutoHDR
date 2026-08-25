@@ -69,7 +69,7 @@ AutoHDR runs in the background (system tray icon), detects when a game starts an
 
 ## Download
 
-Pre-built files are in the **[Releases/v1.0.0](Releases/v1.0.0/)** folder, or in the **Releases** tab on GitHub (after publishing).
+Pre-built files are in the **[Releases](https://github.com/Zakwei/AutoHDR/releases/tag/v1.0.0)** tab.
 
 | File | Description |
 |------|-------------|
