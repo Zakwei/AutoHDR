@@ -27,7 +27,10 @@ jobs:
         run: dotnet build AutoHDR/AutoHDR.csproj -c Release
 
       - name: Build installer
-        run: wix build AutoHDR.Installer/Package.wxs -arch x64 -o AutoHDR-1.1.0.msi -ext WixToolset.UI.wixext
+        run: |
+          cd AutoHDR.Installer
+          wix build Package.wxs -arch x64 -o AutoHDR-1.1.0.msi -ext WixToolset.UI.wixext
+          Move-Item AutoHDR-1.1.0.msi ..
 
       - name: Create portable zip
         shell: pwsh
