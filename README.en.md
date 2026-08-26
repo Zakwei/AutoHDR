@@ -49,7 +49,7 @@ AutoHDR runs in the background (system tray icon), detects when a game starts an
 
 - **Automatic HDR enable** — turns on HDR on all HDR-capable monitors when a game starts.
 - **State restore** — restores the previous HDR state after the game closes.
-- **Game launcher detection** — scans Steam, Epic Games, GOG, EA App, Ubisoft Connect, Battle.net and common game folders.
+- **Game launcher detection** — scans Steam, Epic Games, GOG, EA App, Ubisoft Connect, Battle.net, Microsoft Store and common game folders.
 - **Built-in list of 800+ games** — `known_games.txt` contains popular game process names.
 - **Manual game addition** — settings window lets you add your own `.exe` or process name.
 - **Auto-start with Windows** — optionally launch on user logon.
@@ -69,12 +69,12 @@ AutoHDR runs in the background (system tray icon), detects when a game starts an
 
 ## Download
 
-Pre-built files are in the **[Releases](https://github.com/Zakwei/AutoHDR/releases/tag/v1.0.0)** tab.
+Pre-built files are in the **[Releases](https://github.com/Zakwei/AutoHDR/releases/tag/v1.1.0)** tab.
 
 | File | Description |
 |------|-------------|
-| `AutoHDR-1.0.0.msi` | Windows installer (recommended) |
-| `AutoHDR-1.0.0-portable.zip` | Portable version — extract and run `AutoHDR.exe` |
+| `AutoHDR-1.1.0.msi` | Windows installer (recommended) |
+| `AutoHDR-1.1.0-portable.zip` | Portable version — extract and run `AutoHDR.exe` |
 
 ---
 
@@ -82,7 +82,7 @@ Pre-built files are in the **[Releases](https://github.com/Zakwei/AutoHDR/releas
 
 ### MSI installer (recommended)
 
-1. Download `AutoHDR-1.0.0.msi`.
+1. Download `AutoHDR-1.1.0.msi`.
 2. Double-click and follow the wizard.
 3. Launch **AutoHDR** from the Start Menu.
 
@@ -169,7 +169,7 @@ cd AutoHDR.Installer
 
 ## Known limitations
 
-- **Microsoft Store / Xbox Game Pass** games are not auto-detected (you can add them manually in `games.txt`).
+- **Microsoft Store / Xbox Game Pass** games are detected using a publisher allow-list (`store_game_publishers.txt`). If a game is missing, add its publisher to that file and restart the app.
 - Directory scanning may occasionally find a process that is not a game (false positive). You can remove it in the settings window.
 - Enabling/disabling HDR can take 1–2 seconds and may cause a brief screen flicker.
 
@@ -179,7 +179,7 @@ cd AutoHDR.Installer
 
 ### Does AutoHDR work with Xbox Game Pass / Microsoft Store games?
 
-They are not auto-detected, but you can add their process names manually in the **"Edytuj listę gier"** window.
+Yes. The app auto-detects them using the publisher allow-list in `store_game_publishers.txt`. If a game is missing, add the publisher (first segment of the package name, e.g. `king`) or add the process name manually in the **"Edytuj listę gier"** window.
 
 ### Do I need an HDR monitor?
 
@@ -198,6 +198,16 @@ Yes. It does not require admin rights, does not send any data, and only writes f
 Yes, it requires .NET Framework 4.8, which is present on modern Windows 10 installations.
 
 ---
+
+## Changelog
+
+### v1.1.0 (2026-08-26)
+- Automatic detection of **Microsoft Store / Xbox Game Pass** games (`store_game_publishers.txt`).
+- Fixed handling of process names with spaces, parentheses and other allowed characters.
+- Removed notification balloons shown when refreshing the game list.
+
+### v1.0.0 (2026-08-25)
+- Initial public release.
 
 ## Support
 

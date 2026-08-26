@@ -18,7 +18,7 @@ namespace AutoHDR
 
         public GameMonitor(IEnumerable<string> gameNames, HdrController hdr, Action<string> log)
         {
-            _gameNames = new HashSet<string>(gameNames.Where(n => !string.IsNullOrWhiteSpace(n)).Select(n => n.ToLowerInvariant()));
+            _gameNames = new HashSet<string>(gameNames.Where(n => !string.IsNullOrWhiteSpace(n)), StringComparer.OrdinalIgnoreCase);
             _hdr = hdr;
             _log = log;
             _timer = new Timer(Check, null, TimeSpan.FromSeconds(2), TimeSpan.FromSeconds(2));
@@ -49,7 +49,7 @@ namespace AutoHDR
                         string name = p.ProcessName;
                         if (string.IsNullOrEmpty(name)) continue;
 
-                        if (_gameNames.Contains(name.ToLowerInvariant()))
+                        if (_gameNames.Contains(name))
                         {
                             any = true;
                             foundGame = name;

@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Xml;
 using Microsoft.Win32;
+using Windows.ApplicationModel;
+using Windows.Management.Deployment;
 
 namespace AutoHDR
 {
@@ -19,7 +22,50 @@ namespace AutoHDR
             "launcher", "launch", "start", "config", "settings", "options",
             "update", "patcher", "patch", "repair", "support", "tool",
             "nvidia", "amd", "intel", "physx", "opengl", "vulkan",
-            "sedpatcher", "sedlauncher", "ue4prereq", "ue3redist"
+            "sedpatcher", "sedlauncher", "ue4prereq", "ue3redist",
+            "service", "broker", "runtime"
+        };
+
+        private static readonly string[] MicrosoftStoreNonGamePackages = new[]
+        {
+            "Microsoft.AAD", "Microsoft.Accounts", "Microsoft.Advertising",
+            "Microsoft.AsyncTextService", "Microsoft.AV1", "Microsoft.Bing",
+            "Microsoft.CredDialogHost", "Microsoft.DevHome", "Microsoft.ECApp",
+            "Microsoft.Edge", "Microsoft.HEIF", "Microsoft.HEVC", "Microsoft.LockApp",
+            "Microsoft.MPEG", "Microsoft.MSPaint", "Microsoft.Microsoft3DViewer",
+            "Microsoft.MicrosoftEdge", "Microsoft.MicrosoftPCManager",
+            "Microsoft.NET", "Microsoft.Office", "Microsoft.OneDrive",
+            "Microsoft.OutlookForWindows", "Microsoft.Paint", "Microsoft.People",
+            "Microsoft.PowerAutomate", "Microsoft.RawImage", "Microsoft.ScreenSketch",
+            "Microsoft.Sec", "Microsoft.SkypeApp", "Microsoft.Store",
+            "Microsoft.StorePurchaseApp", "Microsoft.Terminal", "Microsoft.UI",
+            "Microsoft.VCLibs", "Microsoft.VP9", "Microsoft.WebMedia", "Microsoft.Webp",
+            "Microsoft.Windows.", "Microsoft.WindowsAlarms", "Microsoft.WindowsApp",
+            "Microsoft.WindowsCalculator", "Microsoft.WindowsCamera",
+            "Microsoft.WindowsFeedbackHub", "Microsoft.WindowsMaps",
+            "Microsoft.WindowsNotepad", "Microsoft.WindowsSoundRecorder",
+            "Microsoft.WindowsStore", "Microsoft.WindowsTerminal", "Microsoft.Xbox",
+            "Microsoft.YourPhone", "Microsoft.Zune",
+            "MicrosoftWindows.", "Windows."
+        };
+
+        private static readonly string[] MicrosoftStoreNonGameNameParts = new[]
+        {
+            "Graphics", "Command Center", "PC Manager", "PCManager", "Device Manager", "Settings", "Control Panel",
+            "Driver", "Update", "Utility", "Support", "Tool", "Panel", "Assistant", "Optimizer",
+            "Cleaner", "Antivirus", "Security", "Browser", "Mail", "Calendar", "Calculator",
+            "Notepad", "Paint", "Photos", "Camera", "Maps", "Weather", "News", "Money",
+            "Food", "Health", "Travel", "Shopping", "Finance", "Education", "Reference", "Productivity",
+            "Business", "Communication", "Social", "Lifestyle",
+            "Store", "Phone", "Skype", "OneDrive", "Edge", "Terminal", "Feedback", "Defender",
+            "Remote", "Media", "Codec", "Extension", "Runtime", "Package", "HEVC", "HEIF", "WebP",
+            "VP9", "MPEG", "AV1", "Image", "Office", "Word", "Excel", "PowerPoint", "Outlook",
+            "Teams", "OneNote", "Publisher", "Access", "Clipchamp", "Whiteboard", "To Do",
+            "Sticky Notes", "Clock", "Alarms", "Recorder", "Voice", "Translator", "Viewer",
+            "Experience", "Buds",
+            "Lenovo", "Dell", "HP", "ASUS", "Acer", "MSI", "Toshiba", "Realtek", "Qualcomm",
+            "Razer", "Corsair", "Logitech", "NVIDIA", "AMD", "Intel", "LG", "Samsung",
+            "Huawei", "Xiaomi", "MSPC", "IGCC"
         };
 
         private static readonly string[] ExcludeExact = new[]
@@ -28,7 +74,8 @@ namespace AutoHDR
             "epicgameslauncher.exe", "goggalaxy.exe", "uplay.exe", "uplaywebcore.exe",
             "origin.exe", "eadesktop.exe", "eac.exe", "eadesktop.exe",
             "battle.net.exe", "battlenet.exe", "overwolf.exe", "discord.exe",
-            "twitch.exe", "nvidiashare.exe", "amdow.exe", "wallpaperengine.exe"
+            "twitch.exe", "nvidiashare.exe", "amdow.exe", "wallpaperengine.exe",
+            "igcc.exe"
         };
 
         private static readonly string[] ExcludeDirs = new[]
@@ -47,6 +94,7 @@ namespace AutoHDR
             Merge(games, DetectEa());
             Merge(games, DetectUbisoft());
             Merge(games, DetectBlizzard());
+            Merge(games, DetectMicrosoftStore(appDir));
             Merge(games, DetectCommon());
             Merge(games, LoadKnownGames(appDir));
             Merge(games, LoadCustomGames(appDir));
@@ -64,8 +112,6 @@ namespace AutoHDR
             }
         }
 
-        private static readonly Regex ValidGameName = new Regex(@"^[A-Za-z0-9_. -]+$", RegexOptions.Compiled);
-
         public static HashSet<string> LoadKnownGames(string appDir)
         {
             var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -78,6 +124,25 @@ namespace AutoHDR
                     string name = SanitizeGameName(line);
                     if (!string.IsNullOrEmpty(name))
                         set.Add(name);
+                }
+            }
+            catch { }
+            return set;
+        }
+
+        public static HashSet<string> LoadStoreGamePublishers(string appDir)
+        {
+            var set = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            try
+            {
+                string path = Path.Combine(appDir, "store_game_publishers.txt");
+                if (!File.Exists(path)) return set;
+                foreach (var line in File.ReadAllLines(path))
+                {
+                    string trimmed = line.Trim();
+                    if (string.IsNullOrWhiteSpace(trimmed) || trimmed.StartsWith("#")) continue;
+                    if (trimmed.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0) continue;
+                    set.Add(trimmed);
                 }
             }
             catch { }
@@ -102,7 +167,7 @@ namespace AutoHDR
             return set;
         }
 
-        private static string SanitizeGameName(string line)
+        public static string SanitizeGameName(string line)
         {
             if (string.IsNullOrWhiteSpace(line)) return null;
             string trimmed = line.Trim();
@@ -110,7 +175,6 @@ namespace AutoHDR
             string name = Path.GetFileNameWithoutExtension(trimmed).Trim();
             if (string.IsNullOrEmpty(name)) return null;
             if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0) return null;
-            if (!ValidGameName.IsMatch(name)) return null;
             return name;
         }
 
@@ -596,6 +660,93 @@ namespace AutoHDR
                 }
                 catch { }
             }
+
+            return results;
+        }
+
+        public static IEnumerable<string> DetectMicrosoftStore(string appDir)
+        {
+            var results = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            var publisherPrefixes = LoadStoreGamePublishers(appDir);
+
+            try
+            {
+                var packageManager = new PackageManager();
+                var packages = packageManager.FindPackagesForUser(string.Empty);
+
+                foreach (var package in packages)
+                {
+                    try
+                    {
+                        if (package.IsFramework || package.IsResourcePackage)
+                            continue;
+
+                        if (package.SignatureKind == PackageSignatureKind.System)
+                            continue;
+
+                        string packageName = package.Id?.Name ?? "";
+
+                        bool isMicrosoft = packageName.StartsWith("Microsoft.", StringComparison.OrdinalIgnoreCase) ||
+                                           packageName.StartsWith("MicrosoftWindows.", StringComparison.OrdinalIgnoreCase) ||
+                                           packageName.StartsWith("Windows.", StringComparison.OrdinalIgnoreCase);
+
+                        bool isAllowedPublisher = false;
+                        foreach (var prefix in publisherPrefixes)
+                        {
+                            if (packageName.StartsWith(prefix + ".", StringComparison.OrdinalIgnoreCase))
+                            {
+                                isAllowedPublisher = true;
+                                break;
+                            }
+                        }
+
+                        if (!isMicrosoft && !isAllowedPublisher)
+                            continue;
+
+                        if (isMicrosoft && MicrosoftStoreNonGamePackages.Any(p => packageName.StartsWith(p, StringComparison.OrdinalIgnoreCase)))
+                            continue;
+
+                        if (isMicrosoft)
+                        {
+                            string displayName = package.DisplayName ?? "";
+                            if (string.IsNullOrWhiteSpace(displayName) ||
+                                displayName.StartsWith("ms-resource:", StringComparison.OrdinalIgnoreCase) ||
+                                MicrosoftStoreNonGameNameParts.Any(p => displayName.IndexOf(p, StringComparison.OrdinalIgnoreCase) >= 0))
+                                continue;
+                        }
+
+                        string installPath = package.InstalledLocation?.Path;
+                        if (string.IsNullOrEmpty(installPath) || !Directory.Exists(installPath))
+                            continue;
+
+                        string manifestPath = Path.Combine(installPath, "AppxManifest.xml");
+                        if (!File.Exists(manifestPath))
+                            continue;
+
+                        var doc = new XmlDocument();
+                        doc.Load(manifestPath);
+
+                        var nsmgr = new XmlNamespaceManager(doc.NameTable);
+                        nsmgr.AddNamespace("default", "http://schemas.microsoft.com/appx/manifest/foundation/windows10");
+
+                        var appNodes = doc.SelectNodes("//default:Applications/default:Application", nsmgr);
+                        if (appNodes == null) continue;
+
+                        foreach (XmlNode app in appNodes)
+                        {
+                            string exe = app.Attributes?["Executable"]?.Value;
+                            if (string.IsNullOrEmpty(exe)) continue;
+
+                            string fullPath = Path.Combine(installPath, exe);
+                            if (IsGameExecutable(fullPath))
+                                results.Add(Path.GetFileNameWithoutExtension(exe));
+                        }
+                    }
+                    catch { }
+                }
+            }
+            catch { }
 
             return results;
         }

@@ -303,7 +303,6 @@ namespace AutoHDR
             try
             {
                 await RefreshGamesAsync();
-                _notifyIcon?.ShowBalloonTip(2000, "AutoHDR", _gamesItem.Text, ToolTipIcon.Info);
             }
             catch (Exception ex)
             {

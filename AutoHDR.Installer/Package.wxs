@@ -1,7 +1,7 @@
 <Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
      xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
 
-  <Package Name="AutoHDR" Language="1045" Version="1.0.0.0" Manufacturer="AutoHDR"
+  <Package Name="AutoHDR" Language="1045" Version="1.1.0.0" Manufacturer="AutoHDR"
            UpgradeCode="A1B2C3D4-E5F6-7890-1234-56789ABCDEF0"
            Scope="perUser" Compressed="yes" ProductCode="*" InstallerVersion="200">
 
@@ -41,6 +41,9 @@
       </Component>
       <Component>
         <File Id="known_games.txt" Source="..\AutoHDR\bin\Release\net48\known_games.txt" />
+      </Component>
+      <Component>
+        <File Id="store_game_publishers.txt" Source="..\AutoHDR\bin\Release\net48\store_game_publishers.txt" />
       </Component>
     </ComponentGroup>
 

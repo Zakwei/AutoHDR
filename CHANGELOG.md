@@ -1,5 +1,15 @@
 # Changelog
 
+## [1.1.0] - 2026-08-26
+
+### Added
+- Automatyczne wykrywanie gier z Microsoft Store / Xbox Game Pass.
+- Nowy plik `store_game_publishers.txt` z białą listą wydawców gier ze Store.
+
+### Fixed
+- Nazwy procesów ze spacjami, nawiasami i innymi dozwolonymi znakami są teraz poprawnie obsługiwane podczas wprowadzania.
+- Usunięto dymki powiadomień przy odświeżaniu listy gier.
+
 ## [1.0.0] - 2026-08-25
 
 ### Added

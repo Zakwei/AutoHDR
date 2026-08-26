@@ -11,9 +11,9 @@
     <RootNamespace>AutoHDR</RootNamespace>
     <AssemblyName>AutoHDR</AssemblyName>
     <ApplicationIcon>Assets\logo.ico</ApplicationIcon>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
-    <Version>1.0.0</Version>
+    <AssemblyVersion>1.1.0.0</AssemblyVersion>
+    <FileVersion>1.1.0.0</FileVersion>
+    <Version>1.1.0</Version>
     <Authors>AutoHDR Contributors</Authors>
     <Product>AutoHDR</Product>
     <Description>Automatyczne wlaczanie HDR podczas gier.</Description>
@@ -32,6 +32,13 @@
     <Content Include="known_games.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="store_game_publishers.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Windows.SDK.Contracts" Version="10.0.26100.7705" />
   </ItemGroup>
 
 </Project>

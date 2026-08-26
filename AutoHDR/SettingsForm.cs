@@ -140,7 +140,7 @@ namespace AutoHDR
                 {
                     foreach (var line in File.ReadAllLines(path))
                     {
-                        string name = Sanitize(line);
+                        string name = GameDetector.SanitizeGameName(line);
                         if (!string.IsNullOrEmpty(name) && !_games.Contains(name, StringComparer.OrdinalIgnoreCase))
                             _games.Add(name);
                     }
@@ -152,14 +152,7 @@ namespace AutoHDR
 
         private static string Sanitize(string line)
         {
-            if (string.IsNullOrWhiteSpace(line)) return null;
-            string trimmed = line.Trim();
-            if (trimmed.StartsWith("#")) return null;
-            string name = Path.GetFileNameWithoutExtension(trimmed).Trim();
-            if (string.IsNullOrEmpty(name)) return null;
-            if (name.IndexOfAny(Path.GetInvalidFileNameChars()) >= 0) return null;
-            if (System.Text.RegularExpressions.Regex.IsMatch(name, @"^[A-Za-z0-9_. -]+$") == false) return null;
-            return name;
+            return GameDetector.SanitizeGameName(line);
         }
 
         private void RefreshList()
@@ -198,7 +191,7 @@ namespace AutoHDR
                 dlg.Title = Locale.Get("SelectGameExe");
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    string name = Path.GetFileNameWithoutExtension(dlg.FileName);
+                    string name = GameDetector.SanitizeGameName(dlg.FileName);
                     if (string.IsNullOrEmpty(name)) return;
                     if (!_games.Contains(name, StringComparer.OrdinalIgnoreCase))
                     {
