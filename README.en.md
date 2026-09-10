@@ -69,12 +69,12 @@ AutoHDR runs in the background (system tray icon), detects when a game starts an
 
 ## Download
 
-Pre-built files are in the **[Releases](https://github.com/Zakwei/AutoHDR/releases/tag/v1.1.0)** tab.
+Pre-built files are in the **[Releases](https://github.com/Zakwei/AutoHDR/releases/tag/v1.1.1)** tab.
 
 | File | Description |
 |------|-------------|
-| `AutoHDR-1.1.0.msi` | Windows installer (recommended) |
-| `AutoHDR-1.1.0-portable.zip` | Portable version — extract and run `AutoHDR.exe` |
+| `AutoHDR-1.1.1.msi` | Windows installer (recommended) |
+| `AutoHDR-1.1.1-portable.zip` | Portable version — extract and run `AutoHDR.exe` |
 
 ---
 
@@ -82,7 +82,7 @@ Pre-built files are in the **[Releases](https://github.com/Zakwei/AutoHDR/releas
 
 ### MSI installer (recommended)
 
-1. Download `AutoHDR-1.1.0.msi`.
+1. Download `AutoHDR-1.1.1.msi`.
 2. Double-click and follow the wizard.
 3. Launch **AutoHDR** from the Start Menu.
 
@@ -200,6 +200,9 @@ Yes, it requires .NET Framework 4.8, which is present on modern Windows 10 insta
 ---
 
 ## Changelog
+
+### v1.1.1 (2026-09-10)
+- Fix: the Xbox app (Microsoft.GamingApp / `XboxPcApp.exe`), Game Bar and Gaming Services are no longer treated as games — launching the Xbox app no longer enables HDR, and the toggle direction works correctly (game starts → HDR on, game ends → HDR restored).
 
 ### v1.1.0 (2026-08-26)
 - Automatic detection of **Microsoft Store / Xbox Game Pass** games (`store_game_publishers.txt`).

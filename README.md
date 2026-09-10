@@ -69,12 +69,12 @@ AutoHDR działa w tle (ikona w zasobniku systemowym), wykrywa uruchamiane gry i 
 
 ## Pobieranie
 
-Gotowe pliki znajdziesz w zakładce **[Releases](https://github.com/Zakwei/AutoHDR/releases/tag/v1.1.0)**.
+Gotowe pliki znajdziesz w zakładce **[Releases](https://github.com/Zakwei/AutoHDR/releases/tag/v1.1.1)**.
 
 | Plik | Opis |
 |------|------|
-| `AutoHDR-1.1.0.msi` | Instalator Windows (polecany) |
-| `AutoHDR-1.1.0-portable.zip` | Wersja przenośna — rozpakuj i uruchom `AutoHDR.exe` |
+| `AutoHDR-1.1.1.msi` | Instalator Windows (polecany) |
+| `AutoHDR-1.1.1-portable.zip` | Wersja przenośna — rozpakuj i uruchom `AutoHDR.exe` |
 
 ---
 
@@ -82,7 +82,7 @@ Gotowe pliki znajdziesz w zakładce **[Releases](https://github.com/Zakwei/AutoH
 
 ### Instalator MSI (polecany)
 
-1. Pobierz `AutoHDR-1.1.0.msi`.
+1. Pobierz `AutoHDR-1.1.1.msi`.
 2. Kliknij dwukrotnie i postępuj zgodnie z kreatorem.
 3. Po instalacji uruchom **AutoHDR** z Menu Start.
 
@@ -200,6 +200,9 @@ Tak, wymagany jest .NET Framework 4.8, który jest obecny na współczesnych ins
 ---
 
 ## Changelog
+
+### v1.1.1 (2026-09-10)
+- Poprawka: aplikacja Xbox (Microsoft.GamingApp / `XboxPcApp.exe`), Game Bar i Gaming Services nie są już traktowane jako gry — uruchomienie aplikacji Xbox nie włącza już HDR, a kierunek przełączania (gra startuje → HDR włącza się, gra kończy → HDR wraca) działa prawidłowo.
 
 ### v1.1.0 (2026-08-26)
 - Automatyczne wykrywanie gier z **Microsoft Store / Xbox Game Pass** (`store_game_publishers.txt`).

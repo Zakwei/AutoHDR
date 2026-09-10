@@ -45,6 +45,7 @@ namespace AutoHDR
             "Microsoft.WindowsFeedbackHub", "Microsoft.WindowsMaps",
             "Microsoft.WindowsNotepad", "Microsoft.WindowsSoundRecorder",
             "Microsoft.WindowsStore", "Microsoft.WindowsTerminal", "Microsoft.Xbox",
+            "Microsoft.Gaming",
             "Microsoft.YourPhone", "Microsoft.Zune",
             "MicrosoftWindows.", "Windows."
         };
@@ -63,6 +64,7 @@ namespace AutoHDR
             "Teams", "OneNote", "Publisher", "Access", "Clipchamp", "Whiteboard", "To Do",
             "Sticky Notes", "Clock", "Alarms", "Recorder", "Voice", "Translator", "Viewer",
             "Experience", "Buds",
+            "Xbox", "Game Bar", "GameBar", "Gaming Services", "Gaming App",
             "Lenovo", "Dell", "HP", "ASUS", "Acer", "MSI", "Toshiba", "Realtek", "Qualcomm",
             "Razer", "Corsair", "Logitech", "NVIDIA", "AMD", "Intel", "LG", "Samsung",
             "Huawei", "Xiaomi", "MSPC", "IGCC"
@@ -75,7 +77,10 @@ namespace AutoHDR
             "origin.exe", "eadesktop.exe", "eac.exe", "eadesktop.exe",
             "battle.net.exe", "battlenet.exe", "overwolf.exe", "discord.exe",
             "twitch.exe", "nvidiashare.exe", "amdow.exe", "wallpaperengine.exe",
-            "igcc.exe"
+            "igcc.exe",
+            "xboxpcapp.exe", "xboxpcappft.exe", "xboxgamebarwidgets.exe",
+            "gamebar.exe", "gamebarpresencewriter.exe",
+            "gamingservices.exe", "gamingservicesnet.exe", "gamingtcui.exe"
         };
 
         private static readonly string[] ExcludeDirs = new[]

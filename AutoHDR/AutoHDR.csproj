@@ -11,9 +11,9 @@
     <RootNamespace>AutoHDR</RootNamespace>
     <AssemblyName>AutoHDR</AssemblyName>
     <ApplicationIcon>Assets\logo.ico</ApplicationIcon>
-    <AssemblyVersion>1.1.0.0</AssemblyVersion>
-    <FileVersion>1.1.0.0</FileVersion>
-    <Version>1.1.0</Version>
+    <AssemblyVersion>1.1.1.0</AssemblyVersion>
+    <FileVersion>1.1.1.0</FileVersion>
+    <Version>1.1.1</Version>
     <Authors>AutoHDR Contributors</Authors>
     <Product>AutoHDR</Product>
     <Description>Automatyczne wlaczanie HDR podczas gier.</Description>

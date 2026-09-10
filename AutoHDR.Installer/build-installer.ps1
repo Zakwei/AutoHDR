@@ -9,9 +9,9 @@ try {
     dotnet build ..\AutoHDR\AutoHDR.csproj -c Release
 
     Write-Host "Budowanie instalatora MSI..."
-    wix build Package.wxs -arch x64 -o AutoHDR-1.1.0.msi -ext WixToolset.UI.wixext
+    wix build Package.wxs -arch x64 -o AutoHDR-1.1.1.msi -ext WixToolset.UI.wixext
 
-    Write-Host "Gotowe: $root\AutoHDR-1.1.0.msi"
+    Write-Host "Gotowe: $root\AutoHDR-1.1.1.msi"
 }
 finally {
     Pop-Location

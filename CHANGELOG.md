@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.1] - 2026-09-10
+
+### Fixed
+- Aplikacja Xbox (`Microsoft.GamingApp`, proces `XboxPcApp.exe`) oraz usługi towarzyszące (Game Bar, Gaming Services) nie są już błędnie wykrywane jako gry. Wcześniej samo uruchomienie aplikacji Xbox włączało HDR, a uruchomienie właściwej gry je wyłączało, bo monitorowany był launcher, a nie gra.
+- Dodano `Microsoft.Gaming*` do listy pakietów niebędących grami oraz "Xbox", "Game Bar", "Gaming Services" do filtra nazw wyświetlanych pakietów Microsoft.
+- Dodano `xboxpcapp.exe`, `xboxpcappft.exe`, `xboxgamebarwidgets.exe`, `gamebar.exe`, `gamebarpresencewriter.exe`, `gamingservices.exe`, `gamingservicesnet.exe`, `gamingtcui.exe` do listy wykluczonych plików `.exe`.
+
 ## [1.1.0] - 2026-08-26
 
 ### Added
